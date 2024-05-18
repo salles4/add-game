@@ -2,6 +2,7 @@
   import { Fireworks } from '@fireworks-js/svelte'
   import type { FireworksOptions } from '@fireworks-js/svelte'
 
+  import { onMount } from 'svelte';
   import {slide} from 'svelte/transition';
 
   let fw: Fireworks
@@ -10,7 +11,10 @@
     autoresize: true
   }
   function toggleFireworks() {
+    console.log(fw);
     const fireworks = fw.fireworksInstance()
+    console.log(fireworks);
+    
     if (fireworks.isRunning) {
       fireworks.waitStop()
     } else {
@@ -19,21 +23,32 @@
   }
   export let score: number;
   export let time: string;
+  let message = ""
+  let highScore = parseInt(localStorage.getItem("highScore") || "0");
+  onMount(() => {
+    if(highScore < score){
+      message = "New High Score!"
+      toggleFireworks()
+      localStorage.setItem("highScore", String(score))
+    }else{
+      message = `Score to beat: <b><code>${highScore}</code></b>`
+    }
+  })
 
 </script>
 <div class="fireworks-div">
-    <Fireworks bind:this={fw} autostart={true} {options} class="fireworks" />
+    <Fireworks bind:this={fw} autostart={false} {options} class="fireworks" />
 </div>
 <div class="dashboard container">
     <div class="content" in:slide={{delay: 600}}>
         <h3>
-            New Record!
+            {@html message}
         </h3>
         <h1>{score}</h1>
-        <h5>Solved in {time}s</h5>
+        <h5>Finished in {time}s</h5>
         <div>
             <button on:click class="btn btn-primary m-2">Play Again</button>
-            <button class="btn btn-secondary m-2">Show Scores</button>
+            <button disabled class="btn btn-secondary m-2">Show Scores</button>
         </div>
     </div>
 </div>

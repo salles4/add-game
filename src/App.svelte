@@ -1,19 +1,20 @@
+<svelte:head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</svelte:head>
 <script>
   import Addition from './lib/Addition.svelte';
-  import Counter from './lib/Counter.svelte'
   import Fireworks from './lib/Fireworks.svelte';
-  let complete = true
+  let complete = false
   function again(){
-    complete = true
-    console.log("again");
+    complete = false
   }
   let score;
   let time;
 </script>
 
 <main>
-  {#if complete}
-    <Addition on:complete={e=>{score = e.detail.score; time = e.detail.time; complete = false}}/>
+  {#if !complete}
+    <Addition on:complete={e=>{score = e.detail.score; time = e.detail.time; complete = true}}/>
   {:else}
     <Fireworks score={score} time={time} on:click={again}/>
   {/if}

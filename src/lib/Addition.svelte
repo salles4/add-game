@@ -57,7 +57,10 @@
   class="text-center d-flex justify-content-center align-items-center vh-100"
   style="overflow:hidden;"
 >
-  <div class="content">
+<div class="content">
+    <div class="pb-5">
+      <i class="bi bi-tools"></i>
+    </div>
     <h1 class="nums">{num1} + {num2}</h1>
     <input
       type="number"
@@ -65,12 +68,13 @@
       bind:value={guess}
       on:keyup={(e) => (e.key === "Enter" ? guessClicked() : "")}
     />
-    <button on:click={guessClicked} class="btn btn-secondary">Guess</button>
+    <button on:click={guessClicked} class="btn btn-secondary">Answer</button>
     <div>
-      <h2 class={scoreClass}>
+      <h1 class={scoreClass}>
         Score: {score}
-      </h2>
+      </h1>
       <Timer bind:this={timerComponent} on:timesUp={complete}/>
+      <small>+3 seconds per correct answer</small>
     </div>
   </div>
 </Container>
